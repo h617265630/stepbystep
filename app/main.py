@@ -5,6 +5,6 @@ from app.db.database import engine, Base
 
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="User Management API")
+app = FastAPI(title="User Management API",debug = True)
 
 app.include_router(user.router)
