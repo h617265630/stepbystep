@@ -1,7 +1,7 @@
-from sqlalchemy.orm import Session, joinedload, selectinload
+from sqlalchemy.orm import Session
 from typing import List, Optional
 from app.models.video import Video
-from app.models.relations import UserVideoLike, UserFollow, LikeType
+from app.models.user_video import UserVideo
 
 class VideoCURD:
     @staticmethod
@@ -10,52 +10,31 @@ class VideoCURD:
     
     @staticmethod
     def get_videos_by_user(db: Session, user_id: int, skip: int = 0, limit: int = 100) -> List[Video]:
-        return (db.query(Video)
-                .filter(Video.owner_id == user_id)
-                .offset(skip)
-                .limit(limit)
-                .all())
+        videos = db.query(Video).join(UserVideo,UserVideo.video_id==Video.id)\
+                    .filter(UserVideo.user_id == user_id)\
+                    .offset(skip)\
+                    .limit(limit)\
+                    .all()
+        return videos
     
     @staticmethod
-    def create_video(db: Session, title: str, owner_id: int, **kwargs) -> Video:
-        video = Video(title=title, owner_id=owner_id, **kwargs)
+    def create_video(db: Session, file_path:str,title: str, user_id: int, description:str=None) -> Video:
+        video = Video(file_path=file_path, title=title, description=description)
         db.add(video)
         db.commit()
         db.refresh(video)
+
+        # 创建关联记录
+        user_video = UserVideo(user_id=user_id, video_id=video.id)
+        try:
+            db.add(user_video)
+            db.commit()
+        except:
+            db.rollback()
+            raise Exception("This video is already associated with the user.")
+
         return video
     
-    @staticmethod
-    def get_video_with_owner(db: Session, video_id: int) -> Optional[Video]:
-        return (db.query(Video)
-                .options(joinedload(Video.owner))
-                .filter(Video.id == video_id)
-                .first())
-    
-    @staticmethod
-    def like_video(db: Session, user_id: int, video_id: int, like_type: LikeType = LikeType.LIKE) -> UserVideoLike:
-        # 检查是否已经点赞
-        existing_like = (db.query(UserVideoLike)
-                        .filter(
-                            UserVideoLike.user_id == user_id,
-                            UserVideoLike.video_id == video_id
-                        )
-                        .first())
-        
-        if existing_like:
-            # 更新点赞类型
-            existing_like.like_type = like_type
-        else:
-            # 创建新点赞
-            existing_like = UserVideoLike(
-                user_id=user_id,
-                video_id=video_id,
-                like_type=like_type
-            )
-            db.add(existing_like)
-        
-        db.commit()
-        db.refresh(existing_like)
-        return existing_like
     
     @staticmethod
     def delete_video(db: Session, video: Video) -> None:

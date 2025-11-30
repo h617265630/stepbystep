@@ -2,11 +2,11 @@
 from sqlalchemy import Column, Integer, String,Boolean, Text, DateTime, ForeignKey, Float 
 from sqlalchemy.orm import relationship
 from app.models.path_item import PathItem
-from datetime import datetime
 
 class Video(PathItem):
     __tablename__ = "videos"
-
+    title = Column(String(200), nullable=False)
+    description = Column(Text, nullable=True)
     id = Column(Integer, ForeignKey('path_items.id'), primary_key=True)
     file_size = Column(Integer, nullable=False)  # in bytes
     file_path = Column(String(500), nullable=False)

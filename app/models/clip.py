@@ -1,11 +1,12 @@
 #根据以下字段生成clip的模型：id，title,description,clip_path, from_video_id,start_time,end_time,clip_duration,clip_method,generated_by,createdtime
-from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Float
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, Float
 from sqlalchemy.orm import relationship
 from app.models.path_item import PathItem
 
 class Clip(PathItem):
     __tablename__ = "clips"
-
+    title = Column(String(200), nullable=False)
+    description = Column(Text, nullable=True)
     id = Column(Integer, ForeignKey('path_items.id'), primary_key=True)
     start_time = Column(Float, nullable=False)  # in seconds
     end_time = Column(Float, nullable=False)    # in seconds

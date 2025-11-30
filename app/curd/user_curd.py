@@ -39,9 +39,3 @@ class UserCURD:
         return user
     
     
-    @staticmethod
-    def get_user_with_videos(db: Session, user_id: int) -> Optional[User]:
-        return (db.query(User)
-                .options(selectinload(User.videos))
-                .filter(User.id == user_id)
-                .first())

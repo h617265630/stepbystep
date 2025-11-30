@@ -10,12 +10,14 @@ class ClipCURD:
     
     @staticmethod
     def get_clips_by_videoId(db: Session, video_id: int, skip: int = 0, limit: int = 100) -> List[Clip]:
-        return (db.query(Clip)
-                .filter(Clip.from_video_id == video_id)
-                .offset(skip)
-                .limit(limit)
-                .all())
+        clips = db.query(Clip)\
+                .filter(Clip.from_video_id == video_id)\
+                .offset(skip)\
+                .limit(limit)\
+                .all()
+        return clips
     
+
     @staticmethod
     def create_clip(db: Session, title: str, video_id: int, **kwargs) -> Clip:
         clip = Clip(title=title, from_video_id=video_id, **kwargs)

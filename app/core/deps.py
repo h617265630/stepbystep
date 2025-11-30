@@ -26,6 +26,7 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
         raise credentials_exception()
     return user
 
+
 def credentials_exception():
     return HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,

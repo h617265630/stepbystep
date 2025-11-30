@@ -1,5 +1,6 @@
 #/create
-#/id/add_item
+#/lists
+#/list/id
 
-#/id/recommended
+
 
