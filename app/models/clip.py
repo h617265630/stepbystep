@@ -5,11 +5,10 @@ from app.db.database import Base
 class Clip(Base):
     __tablename__ = "clips"
 
-    id = Column(String(36), primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True)
     title = Column(String(200), nullable=False)
     description = Column(Text, nullable=True)
     clip_path = Column(String(500), nullable=False)
-    from_video_id = Column(String(36), ForeignKey('videos.id'), nullable=False)
     start_time = Column(Float, nullable=False)  # in seconds
     end_time = Column(Float, nullable=False)    # in seconds
     clip_duration = Column(Float, nullable=False)  # in seconds
@@ -17,6 +16,10 @@ class Clip(Base):
     generated_by = Column(String(50), nullable=True)
     created_time = Column(DateTime, nullable=False)
 
+    # key
+    from_video_id = Column(Integer, ForeignKey('videos.id'), nullable=False)
+    
+    #relationships
     video = relationship("Video", backref="clips")
 
     def __repr__(self):

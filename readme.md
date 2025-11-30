@@ -22,8 +22,12 @@
 
 ## 依赖安装
 
-在项目根目录执行（PowerShell）：
+克隆该项目到本地文件夹
+git clone https://github.com/h617265630/stepbystep
 
+在本地安装pgsql , 并且新建数据库。db文件夹里的database 根据本地pgsql的数据库名修改连接的数据库。
+
+在该文件的 step目录下执行： 根据自己的虚拟环境。
 ```powershell
 Set-Location 'C:\Users\Administrator\Videos\stepbystep\step'
 python -m venv .venv
