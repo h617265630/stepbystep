@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException,status
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
 from app.schemas.user import UserCreate, UserResponse,Token
-from app.curd.userCrud import UserCRUD
+from app.curd.user_curd import UserCURD
 from app import auth,curd
 from app.core.deps import get_db_dep,get_current_user
 
@@ -43,12 +43,12 @@ def read_current_user(current_user = Depends(get_current_user)):
 
 @router.get("/", response_model=list[UserResponse])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db_dep)):
-    return UserCRUD.get_users(db, skip=skip, limit=limit)
+    return UserCURD.get_users(db, skip=skip, limit=limit)
 
 
 @router.get("/{user_id}", response_model=UserResponse)
 def read_user(user_id: int, db: Session = Depends(get_db_dep)):
-    db_user = UserCRUD.get_user(db, user_id)
+    db_user = UserCURD.get_user(db, user_id)
     if not db_user:
         raise HTTPException(status_code=404, detail="User not found")
     return db_user

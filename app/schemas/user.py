@@ -1,4 +1,4 @@
-from  typing import Optional
+from typing import Optional
 from pydantic import BaseModel,EmailStr
 from datetime import datetime
 
@@ -38,7 +38,7 @@ class UserResponse(UserBase):
         "from_attributes": True
     }
 
-class UserOutWithFolowers(UserResponse):
+class UserOutWithFollowers(UserResponse):
     followers_count: int = 0
     following_count: int = 0
     

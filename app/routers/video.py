@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException,status
 from sqlalchemy.orm import Session
-from app.curd.videoCrud import VideoCRUD
+from app.curd.video_curd import VideoCURD
 
 from app.schemas.video import VideoCreate, VideoResponse
 from app.core.deps import get_db_dep,get_current_user
@@ -10,20 +10,20 @@ router = APIRouter(prefix="/videos", tags=["Videos"])
 
 @router.post("/", response_model=VideoResponse, status_code=status.HTTP_201_CREATED)
 def create_video(video_in: VideoCreate, db: Session = Depends(get_db_dep), current_user = Depends(get_current_user)):
-    video = VideoCRUD.create_video(db,video_in,owner_id=current_user.id)
+    video = VideoCURD.create_video(db,video_in,owner_id=current_user.id)
 
     # user = curd.user.create_user(db, username=user_in.username, email=user_in.email, password=hashed) 作比较
     return video
 
 @router.get("/", response_model=List[VideoResponse])
 def read_videos(skip: int = 0, limit: int = 100, db: Session = Depends(get_db_dep)):
-    videos = VideoCRUD.get_videos(db, skip=skip, limit=limit)
+    videos = VideoCURD.get_videos(db, skip=skip, limit=limit)
     return videos
 
 
 @router.get("/{video_id}", response_model=VideoResponse)
 def read_video(video_id: int, db: Session = Depends(get_db_dep)):
-    db_video = VideoCRUD.get_video(db, video_id)
+    db_video = VideoCURD.get_video(db, video_id)
     if not db_video:
         raise HTTPException(status_code=404, detail="Video not found")
     return db_video
@@ -42,11 +42,11 @@ def read_video(video_id: int, db: Session = Depends(get_db_dep)):
 
 @router.delete("/{video_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_video(video_id: int, db: Session = Depends(get_db_dep), current_user = Depends(get_current_user)):
-    video = VideoCRUD.get_video(db, video_id)
+    video = VideoCURD.get_video(db, video_id)
     if not video:
         raise HTTPException(status_code=404, detail="Video not found")
     if video.owner_id != current_user.id:
         raise HTTPException(status_code=403, detail="Not authorized to delete this video")
     
-    VideoCRUD.delete_video(db, video)
+    VideoCURD.delete_video(db, video)
     return None

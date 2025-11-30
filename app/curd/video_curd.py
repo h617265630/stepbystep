@@ -3,7 +3,7 @@ from typing import List, Optional
 from app.models.video import Video
 from app.models.relations import UserVideoLike, UserFollow, LikeType
 
-class VideoCRUD:
+class VideoCURD:
     @staticmethod
     def get_video(db: Session, video_id: int) -> Optional[Video]:
         return db.query(Video).filter(Video.id == video_id).first()

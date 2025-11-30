@@ -6,7 +6,7 @@ from app.models.user import User
 from typing import Optional,List
 from sqlalchemy.orm import selectinload
 
-class UserCRUD:
+class UserCURD:
     @staticmethod
     def get_user(db: Session, user_id: int)->Optional[User]:
         return db.query(User).filter(User.id == user_id).first()
