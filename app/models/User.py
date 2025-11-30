@@ -1,9 +1,8 @@
 from sqlalchemy import Column, Integer, String,DateTime,Boolean,Text
-from sqlalchemy import relationship
-from typing import Optional
+from sqlalchemy.orm import relationship
 from  app.db.database import Base
-
 from datetime import datetime
+
 class User(Base):
     __tablename__ = "users"
 
@@ -20,8 +19,8 @@ class User(Base):
     is_superuser = Column(Boolean, default=False)  # 1 for superuser, 0 for regular user
     
     #relationships
-    videos = relationship("Video",back_populated="owner",cascade="all, delete-orphan")
-    videos_likes = relationship("UserVideoLike",back_populated="user")
+    videos = relationship("Video",back_populates="owner",cascade="all, delete-orphan")
+    videos_likes = relationship("UserVideoLike",back_populates="user")
 
     #自引用关系
     following = relationship(

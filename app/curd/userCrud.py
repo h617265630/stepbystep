@@ -1,9 +1,10 @@
 # backend/app/crud/user.py
 from sqlalchemy.orm import Session
-from app.models.User import User
+from app.models.user import User
 # from app.auth import hash_password
 # from app.schemas.user import UserCreate
 from typing import Optional,List
+from sqlalchemy.orm import selectinload
 
 class UserCRUD:
     @staticmethod

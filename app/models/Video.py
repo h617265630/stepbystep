@@ -7,7 +7,7 @@ from datetime import datetime
 class Video(Base):
     __tablename__ = "videos"
 
-    id = Column(String(36), primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True)
     title = Column(String(200), nullable=False)
     description = Column(Text, nullable=True)
     file_size = Column(Integer, nullable=False)  # in bytes

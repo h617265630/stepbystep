@@ -16,11 +16,3 @@ def get_db():
         yield db
     finally:
         db.close()
-
-# def create_tables():
-#     # 注意：需要先导入所有模型，然后创建表
-#     from models.user import User
-#     from models.video import Video
-#     from models.relations import UserVideoLike
-    
-#     Base.metadata.create_all(bind=engine)

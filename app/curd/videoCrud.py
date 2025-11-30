@@ -1,9 +1,7 @@
 from sqlalchemy.orm import Session, joinedload, selectinload
-from sqlalchemy import and_, or_, func
 from typing import List, Optional
-from models.user import User
-from models.video import Video
-from models.relations import UserVideoLike, UserFollow, LikeType
+from app.models.video import Video
+from app.models.relations import UserVideoLike, UserFollow, LikeType
 
 class VideoCRUD:
     @staticmethod
@@ -58,3 +56,8 @@ class VideoCRUD:
         db.commit()
         db.refresh(existing_like)
         return existing_like
+    
+    @staticmethod
+    def delete_video(db: Session, video: Video) -> None:
+        db.delete(video)
+        db.commit() 
