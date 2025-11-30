@@ -19,20 +19,12 @@ class User(Base):
     is_superuser = Column(Boolean, default=False)  # 1 for superuser, 0 for regular user
     
     #relationships
-    videos = relationship("Video",back_populates="owner",cascade="all, delete-orphan")
-    videos_likes = relationship("UserVideoLike",back_populates="user")
-
-    #自引用关系
-    following = relationship(
-         "UserFollow",
-         foreign_keys="UserFollow.follower_id",
-         back_populates="follower_rel"
-    )
-    followers_rel = relationship(
-        "UserFollow",
-        foreign_keys="UserFollow.following_id",
-        back_populates="following_rel"
-    )
+    videos = relationship("Video",secondary="user_video",back_populates="users")
+    learning_paths = relationship("LearningPath", back_populates="users", secondary="user_learning_paths")
+    watch_history = relationship("WatchHistory", back_populates="user")
+    likes = relationship("UserItemLike", back_populates="user")
+    #learning_paths
+    #permissions
 
     def __repr__(self):
         return f"<User(id={self.id}, username={self.username}, email={self.email})>"
@@ -51,3 +43,5 @@ def following_count(self):
     
 def __repr__(self):
     return f"<User(id={self.id}, username='{self.username}')>"
+
+

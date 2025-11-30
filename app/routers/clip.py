@@ -49,3 +49,9 @@ def delete_clip(clip_id: int, db: Session = Depends(get_db_dep), current_user = 
     
     ClipCURD.delete_clip(db, clip)
     return None
+
+# /random
+# /sequential
+#/id/like
+#/id/note
+#/id/notes

@@ -17,7 +17,7 @@ class Category(Base):
 
     parent = relationship("Category", remote_side=[id], backref="children")
 
-    videos = relationship("Video", back_populates="category")
+    videos = relationship("Video", secondary="video_category", back_populates="categories")
 
     def __repr__(self):
         return f"<Category(id={self.id}, name='{self.name}', level={self.level})>"
